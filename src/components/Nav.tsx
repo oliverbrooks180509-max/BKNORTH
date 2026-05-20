@@ -1,115 +1,136 @@
+import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { Menu, X } from "lucide-react";
-import { brand, nav } from "../data/content";
+import Logo from "./Logo";
+import { site } from "../data/site";
 
 export default function Nav() {
-  const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
+  const { scrollY } = useScroll();
+
+  useMotionValueEvent(scrollY, "change", (v) => setScrolled(v > 24));
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
+    if (open) document.documentElement.style.overflow = "hidden";
+    else document.documentElement.style.overflow = "";
+    return () => {
+      document.documentElement.style.overflow = "";
+    };
   }, [open]);
 
   return (
     <>
-      <header
-        className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
+      <motion.header
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+        className={`fixed inset-x-0 top-0 z-40 transition-[background-color,backdrop-filter,border-color] duration-500 ease-apple ${
           scrolled
-            ? "bg-ink-900/80 backdrop-blur-md border-b border-bone/5"
-            : "bg-transparent"
+            ? "bg-ink-950/70 backdrop-blur-xl border-b border-bone/5"
+            : "bg-transparent border-b border-transparent"
         }`}
       >
-        <div className="container-page flex h-16 items-center justify-between md:h-20">
-          <a href="#top" className="flex items-baseline gap-2">
-            <span className="font-serif text-xl tracking-tight text-bone">
-              {brand.name}
-            </span>
-            <span className="hidden font-mono text-[9px] uppercase tracking-micro text-bone/40 md:inline">
-              {brand.established}
-            </span>
+        <div className="container-page flex items-center justify-between h-16 sm:h-20">
+          <a href="#top" className="text-bone hover:text-white transition-colors duration-500">
+            <Logo />
           </a>
 
-          <nav className="hidden items-center gap-8 lg:flex">
-            {nav.map((n) => (
+          <nav className="hidden md:flex items-center gap-10">
+            {site.nav.map((item) => (
               <a
-                key={n.label}
-                href={n.href}
-                className="font-mono text-[11px] uppercase tracking-micro text-bone/70 transition-colors hover:text-gold-500"
+                key={item.href}
+                href={item.href}
+                className="font-mono text-[11px] uppercase tracking-micro text-bone/60 hover:text-bone transition-colors duration-500 link-underline"
               >
-                {n.label}
+                {item.label}
               </a>
             ))}
           </nav>
 
-          <div className="flex items-center gap-3">
+          <div className="hidden md:flex items-center gap-6">
             <a
-              href="#apply"
-              className="hidden md:inline-flex items-center gap-2 border border-bone/15 px-4 py-2.5 font-mono text-[10px] uppercase tracking-micro text-bone/80 transition-all hover:border-gold-500 hover:text-gold-500"
+              href={site.contact.phoneHref}
+              className="font-mono text-[11px] uppercase tracking-micro text-bone/60 hover:text-bone transition-colors duration-500"
             >
-              Apply
-              <span aria-hidden>↗</span>
+              {site.contact.phone}
             </a>
-            <button
-              type="button"
-              aria-label="Open menu"
-              onClick={() => setOpen(true)}
-              className="grid h-10 w-10 place-items-center text-bone lg:hidden"
-            >
-              <Menu className="h-5 w-5" />
-            </button>
+            <a href="#contact" className="btn-primary !py-3 !px-5 text-[10px]">
+              <span>Start a project</span>
+            </a>
           </div>
+
+          <button
+            type="button"
+            aria-label="Open menu"
+            aria-expanded={open}
+            onClick={() => setOpen(true)}
+            className="md:hidden flex flex-col items-end gap-1.5 p-2 -mr-2"
+          >
+            <span className="block h-px w-7 bg-bone" />
+            <span className="block h-px w-5 bg-bone" />
+          </button>
         </div>
-      </header>
+      </motion.header>
 
       <AnimatePresence>
         {open && (
           <motion.div
+            key="mobile-menu"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[60] bg-ink-950"
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            className="fixed inset-0 z-50 bg-ink-950"
           >
-            <div className="container-page flex h-16 items-center justify-between md:h-20">
-              <span className="font-serif text-xl text-bone">{brand.name}</span>
+            <motion.div
+              initial={{ y: -10, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              className="container-page flex items-center justify-between h-16 sm:h-20 border-b border-bone/5"
+            >
+              <Logo />
               <button
                 type="button"
                 aria-label="Close menu"
                 onClick={() => setOpen(false)}
-                className="grid h-10 w-10 place-items-center text-bone"
+                className="font-mono text-[11px] uppercase tracking-micro text-bone/60 hover:text-bone"
               >
-                <X className="h-5 w-5" />
+                Close
               </button>
-            </div>
-            <div className="container-page mt-10 flex flex-col gap-2">
-              {nav.map((n, i) => (
+            </motion.div>
+
+            <nav className="container-page mt-16 flex flex-col gap-7">
+              {site.nav.map((item, i) => (
                 <motion.a
-                  key={n.label}
-                  href={n.href}
+                  key={item.href}
+                  href={item.href}
                   onClick={() => setOpen(false)}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.05 + i * 0.04, ease: [0.65, 0, 0.35, 1] }}
-                  className="border-b border-bone/10 py-5 font-serif text-4xl text-bone"
+                  initial={{ y: 24, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{
+                    duration: 0.9,
+                    delay: 0.1 + i * 0.06,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
+                  className="display text-[clamp(3rem,9vw,5.5rem)] text-bone hover:text-white transition-colors duration-500"
                 >
-                  {n.label}
+                  {item.label}
                 </motion.a>
               ))}
-              <a
-                href="#apply"
-                onClick={() => setOpen(false)}
-                className="btn-primary mt-8 w-full"
-              >
-                Apply for membership <span aria-hidden>↗</span>
+            </nav>
+
+            <motion.div
+              initial={{ y: 16, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.9, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              className="container-page absolute bottom-10 inset-x-0 flex flex-col gap-4"
+            >
+              <span className="label">Get in touch</span>
+              <a href={site.contact.phoneHref} className="font-serif text-2xl text-bone link-underline">
+                {site.contact.phone}
               </a>
-            </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
