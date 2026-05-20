@@ -1,0 +1,109 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  html, body {
+    background-color: #0A0A0A;
+    color: #F5F2EC;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  body {
+    overflow-x: hidden;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  ::selection {
+    background: #C9A961;
+    color: #0A0A0A;
+  }
+  /* Custom scrollbar */
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: #0A0A0A; }
+  ::-webkit-scrollbar-thumb { background: #262626; border-radius: 0; }
+  ::-webkit-scrollbar-thumb:hover { background: #C9A961; }
+}
+
+@layer components {
+  .label {
+    @apply font-mono text-[10px] uppercase tracking-micro text-gold-500;
+  }
+  .label-bone {
+    @apply font-mono text-[10px] uppercase tracking-micro text-bone/60;
+  }
+  .display {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    letter-spacing: -0.03em;
+    line-height: 0.95;
+    font-variation-settings: "opsz" 144, "SOFT" 0;
+  }
+  .display-italic {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 300;
+    letter-spacing: -0.03em;
+  }
+  .rule {
+    @apply h-px w-full bg-bone/10;
+  }
+  .container-page {
+    @apply mx-auto w-full max-w-page px-5 sm:px-8 lg:px-12;
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-3 bg-bone text-ink-900 px-7 py-4 font-mono text-[11px] uppercase tracking-micro transition-all duration-300 hover:bg-gold-500 hover:text-ink-900;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-3 border border-bone/20 text-bone px-7 py-4 font-mono text-[11px] uppercase tracking-micro transition-all duration-300 hover:border-gold-500 hover:text-gold-500;
+  }
+  .link-underline {
+    background-image: linear-gradient(to right, currentColor, currentColor);
+    background-position: 0 100%;
+    background-size: 0 1px;
+    background-repeat: no-repeat;
+    transition: background-size 400ms cubic-bezier(0.65, 0, 0.35, 1);
+  }
+  .link-underline:hover {
+    background-size: 100% 1px;
+  }
+  .noise::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.04;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.9'/></svg>");
+  }
+  .grain-overlay {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 60;
+    opacity: 0.06;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+}
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+  .text-pretty { text-wrap: pretty; }
+  .bg-gold-shimmer {
+    background: linear-gradient(110deg, transparent 25%, rgba(201,169,97,0.35) 50%, transparent 75%);
+    background-size: 200% 100%;
+  }
+  .mask-fade-b {
+    -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent);
+    mask-image: linear-gradient(to bottom, black 60%, transparent);
+  }
+  .mask-fade-r {
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  }
+}
