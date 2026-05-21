@@ -1,15 +1,40 @@
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
+import { useRef } from "react";
 import { Reveal, RevealLines } from "../components/Reveal";
 import { site } from "../data/site";
 
 export default function Services() {
+  const ref = useRef<HTMLElement>(null);
+  const reduced = useReducedMotion();
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+
+  const ghostY = useTransform(scrollYProgress, [0, 1], reduced ? [0, 0] : [200, -200]);
+  const ghostOpacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0]);
+  const headerY = useTransform(scrollYProgress, [0, 1], reduced ? [0, 0] : [60, -60]);
+
   return (
     <section
+      ref={ref}
       id="services"
-      className="relative border-t border-bone/5 bg-ink-950 py-32 sm:py-44 lg:py-52"
+      className="relative overflow-hidden border-t border-bone/5 bg-ink-950 py-32 sm:py-44 lg:py-52"
     >
-      <div className="container-page">
-        <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+      {/* drifting ghost numeral */}
+      <motion.span
+        aria-hidden
+        style={{ y: ghostY, opacity: ghostOpacity }}
+        className="display pointer-events-none absolute -right-[4vw] top-1/3 -translate-y-1/2 select-none text-[40vw] leading-none text-bone/[0.03] sm:text-[30vw]"
+      >
+        04
+      </motion.span>
+
+      <div className="container-page relative">
+        <motion.div
+          style={{ y: headerY }}
+          className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between"
+        >
           <div className="max-w-2xl">
             <span className="label">⟨ 04 ⟩ Services &amp; Pricing</span>
             <RevealLines
@@ -25,11 +50,16 @@ export default function Services() {
               we'll happily shape a package around what you actually need.
             </p>
           </Reveal>
-        </div>
+        </motion.div>
 
         <div className="mt-16 grid grid-cols-1 gap-px bg-bone/5 lg:grid-cols-2">
           {site.services.map((s, i) => (
-            <ServiceCard key={s.tier} idx={i} {...s} />
+            <ServiceCard
+              key={s.tier}
+              idx={i}
+              progress={scrollYProgress}
+              {...s}
+            />
           ))}
         </div>
 
@@ -80,6 +110,7 @@ type ServiceCardProps = {
   hosting: string;
   features: readonly string[];
   featured?: boolean;
+  progress: ReturnType<typeof useScroll>["scrollYProgress"];
 };
 
 function ServiceCard({
@@ -91,14 +122,23 @@ function ServiceCard({
   hosting,
   features,
   featured,
+  progress,
 }: ServiceCardProps) {
+  const reduced = useReducedMotion();
+  // Subtle parallax — staggered so cards drift at different rates.
+  const cardY = useTransform(
+    progress,
+    [0, 1],
+    reduced ? [0, 0] : idx === 0 ? [40, -40] : [60, -60]
+  );
+
   return (
     <motion.article
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.25 }}
       transition={{ duration: 1.1, delay: idx * 0.15, ease: [0.16, 1, 0.3, 1] }}
-      whileHover={{ y: -4 }}
+      style={{ y: cardY }}
       className={`group relative flex flex-col gap-10 p-10 lg:p-14 transition-colors duration-700 ease-apple ${
         featured
           ? "bg-ink-900 text-bone"

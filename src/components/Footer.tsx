@@ -1,15 +1,39 @@
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
+import { useRef } from "react";
 import Logo from "./Logo";
 import { site } from "../data/site";
 import { RevealLines } from "./Reveal";
 
 export default function Footer() {
   const year = new Date().getFullYear();
+  const ref = useRef<HTMLElement>(null);
+  const reduced = useReducedMotion();
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end end"],
+  });
+
+  const headlineY = useTransform(scrollYProgress, [0, 1], reduced ? [0, 0] : [80, -20]);
+  const ghostY = useTransform(scrollYProgress, [0, 1], reduced ? [0, 0] : [120, -40]);
+  const ghostOpacity = useTransform(scrollYProgress, [0, 0.4, 1], [0, 1, 1]);
+
   return (
-    <footer className="relative border-t border-bone/5 bg-ink-950">
-      <div className="container-page py-24 lg:py-32">
+    <footer
+      ref={ref}
+      className="relative overflow-hidden border-t border-bone/5 bg-ink-950"
+    >
+      {/* drifting background mark — parallax */}
+      <motion.span
+        aria-hidden
+        style={{ y: ghostY, opacity: ghostOpacity }}
+        className="display pointer-events-none absolute -right-[6vw] -bottom-[10vh] select-none text-[36vw] leading-none text-bone/[0.03] sm:text-[26vw]"
+      >
+        north
+      </motion.span>
+
+      <div className="container-page relative py-24 lg:py-32">
         <div className="grid grid-cols-1 gap-16 lg:grid-cols-12">
-          <div className="lg:col-span-7">
+          <motion.div style={{ y: headlineY }} className="lg:col-span-7">
             <RevealLines
               as="h2"
               text={"Let's build\nsomething\nworth noticing."}
@@ -30,7 +54,7 @@ export default function Footer() {
                 <span>Book a call</span>
               </a>
             </motion.div>
-          </div>
+          </motion.div>
 
           <div className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 gap-10">
             <div>
