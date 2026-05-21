@@ -1,0 +1,23 @@
+{
+  "name": "B&K North",
+  "short_name": "B&K North",
+  "description": "Modern web design agency — websites built to elevate.",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/apple-touch-icon.svg",
+      "sizes": "180x180",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "theme_color": "#050505",
+  "background_color": "#050505",
+  "display": "standalone",
+  "start_url": "/"
+}
