@@ -79,6 +79,9 @@ export default function About() {
                 <span className="font-mono text-[10px] uppercase tracking-micro">
                   Studio · North
                 </span>
+                <span className="font-mono text-[10px] uppercase tracking-micro">
+                  Est.
+                </span>
               </div>
             </motion.div>
           </div>
