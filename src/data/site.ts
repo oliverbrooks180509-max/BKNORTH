@@ -9,7 +9,7 @@ export const site = {
   contact: {
     phone: "07769933787",
     phoneHref: "tel:+447769933787",
-    email: "contact@bknorth.studio",
+    emails: ["oliverbrooks@bknorth.studio", "kevinkrasnichi@bknorth.studio"],
   },
   nav: [
     { label: "Work", href: "#approach" },

@@ -186,7 +186,7 @@ phone number from one place.
 contact: {
   phone: "07769933787",
   phoneHref: "tel:+447769933787",
-  email: "contact@bknorth.studio",
+  emails: ["oliverbrooks@bknorth.studio", "kevinkrasnichi@bknorth.studio"],
 },
 services: [
   { tier: "01", name: "Standard", price: "£300", hosting: "£79 / month", ... },

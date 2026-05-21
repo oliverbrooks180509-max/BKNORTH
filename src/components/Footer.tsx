@@ -41,14 +41,13 @@ export default function Footer() {
                     {site.contact.phone}
                   </a>
                 </li>
-                <li>
-                  <a
-                    className="link-underline"
-                    href={`mailto:${site.contact.email}`}
-                  >
-                    {site.contact.email}
-                  </a>
-                </li>
+                {site.contact.emails.map((email) => (
+                  <li key={email}>
+                    <a className="link-underline" href={`mailto:${email}`}>
+                      {email}
+                    </a>
+                  </li>
+                ))}
               </ul>
             </div>
             <div>

@@ -38,12 +38,17 @@ export default function Contact() {
                 </div>
                 <div>
                   <span className="label">Email</span>
-                  <a
-                    href={`mailto:${site.contact.email}`}
-                    className="mt-3 block font-serif text-xl font-light text-bone link-underline"
-                  >
-                    {site.contact.email}
-                  </a>
+                  <div className="mt-3 space-y-2">
+                    {site.contact.emails.map((email) => (
+                      <a
+                        key={email}
+                        href={`mailto:${email}`}
+                        className="block font-serif text-xl font-light text-bone link-underline"
+                      >
+                        {email}
+                      </a>
+                    ))}
+                  </div>
                 </div>
               </div>
             </Reveal>
