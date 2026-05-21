@@ -34,7 +34,7 @@ export default function Hero() {
             transition={{ duration: 1.2, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
             className="label"
           >
-            Est. North · Studio
+            North · Studio
           </motion.span>
           <motion.span
             initial={{ opacity: 0, y: 8 }}
