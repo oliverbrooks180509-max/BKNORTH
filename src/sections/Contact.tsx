@@ -43,7 +43,7 @@ export default function Contact() {
                       <a
                         key={email}
                         href={`mailto:${email}`}
-                        className="block font-serif text-xl font-light text-bone link-underline"
+                        className="block font-serif text-xl font-light text-bone link-underline break-all"
                       >
                         {email}
                       </a>

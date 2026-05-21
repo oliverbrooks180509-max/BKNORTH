@@ -1,15 +1,63 @@
 import { motion, useScroll, useTransform, useReducedMotion, type MotionValue } from "framer-motion";
 import { useRef } from "react";
 import { site } from "../data/site";
-import { RevealLines } from "../components/Reveal";
+import { Reveal, RevealLines } from "../components/Reveal";
 
-/**
- * Apple-style sticky-scroll section. A sticky stage stays pinned while
- * step content cross-fades and slides as the user scrolls. The progress
- * indicator on the right ticks as steps activate.
- */
 export default function Approach() {
-  const ref = useRef<HTMLElement>(null);
+  return (
+    <section
+      id="approach"
+      className="relative border-t border-bone/5 bg-ink-950"
+    >
+      <ApproachMobile />
+      <ApproachDesktop />
+    </section>
+  );
+}
+
+function Heading() {
+  return (
+    <>
+      <span className="label">⟨ 03 ⟩ Approach</span>
+      <RevealLines
+        as="h2"
+        text={"How we\nwork."}
+        className="display mt-6 text-[clamp(2.5rem,6vw,5rem)]"
+        stagger={0.12}
+      />
+      <p className="mt-8 max-w-sm text-bone/65 leading-relaxed">
+        Four phases. No surprises. From the first conversation
+        to the live site, the process is calm and deliberate.
+      </p>
+    </>
+  );
+}
+
+function ApproachMobile() {
+  return (
+    <div className="container-page py-24 lg:hidden">
+      <Heading />
+      <div className="mt-16 space-y-12">
+        {site.process.map((s, i) => (
+          <Reveal key={s.step} delay={i * 0.05}>
+            <div className="border-t border-bone/10 pt-6">
+              <span className="font-mono text-[11px] uppercase tracking-micro text-bone/40">
+                {s.step} · {s.title}
+              </span>
+              <h3 className="display mt-4 text-3xl">{s.title}</h3>
+              <p className="mt-4 text-bone/75 leading-relaxed">
+                {s.copy}
+              </p>
+            </div>
+          </Reveal>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ApproachDesktop() {
+  const ref = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -18,10 +66,9 @@ export default function Approach() {
   const steps = site.process;
 
   return (
-    <section
+    <div
       ref={ref}
-      id="approach"
-      className="relative border-t border-bone/5 bg-ink-950"
+      className="relative hidden lg:block"
       style={{ height: `${(steps.length + 1) * 100}vh` }}
     >
       <div className="sticky top-0 h-screen overflow-hidden">
@@ -35,22 +82,12 @@ export default function Approach() {
         />
 
         <div className="container-page relative z-10 flex h-full flex-col justify-center">
-          <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-16">
-            <div className="lg:col-span-4">
-              <span className="label">⟨ 03 ⟩ Approach</span>
-              <RevealLines
-                as="h2"
-                text={"How we\nwork."}
-                className="display mt-6 text-[clamp(2.5rem,6vw,5rem)]"
-                stagger={0.12}
-              />
-              <p className="mt-8 max-w-sm text-bone/65 leading-relaxed">
-                Four phases. No surprises. From the first conversation
-                to the live site, the process is calm and deliberate.
-              </p>
+          <div className="grid grid-cols-12 gap-16">
+            <div className="col-span-4">
+              <Heading />
             </div>
 
-            <div className="lg:col-span-8 relative min-h-[420px]">
+            <div className="col-span-8 relative min-h-[420px]">
               {steps.map((s, i) => {
                 const start = i / steps.length;
                 const end = (i + 1) / steps.length;
@@ -68,14 +105,14 @@ export default function Approach() {
               })}
 
               {/* progress rail */}
-              <div className="absolute right-0 top-0 hidden h-full w-px bg-bone/10 lg:block">
+              <div className="absolute right-0 top-0 h-full w-px bg-bone/10">
                 <ProgressDots progress={scrollYProgress} count={steps.length} />
               </div>
             </div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 
@@ -107,7 +144,7 @@ function Step({
   return (
     <motion.div
       style={{ opacity, y }}
-      className="absolute inset-0 flex flex-col justify-center pr-0 lg:pr-16"
+      className="absolute inset-0 flex flex-col justify-center pr-16"
     >
       <span className="font-mono text-[11px] uppercase tracking-micro text-bone/40">
         {step} · {title}

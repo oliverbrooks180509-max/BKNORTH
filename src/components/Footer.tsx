@@ -32,7 +32,7 @@ export default function Footer() {
             </motion.div>
           </div>
 
-          <div className="lg:col-span-5 grid grid-cols-2 gap-10">
+          <div className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 gap-10">
             <div>
               <span className="label">Contact</span>
               <ul className="mt-6 space-y-3 text-bone/80">
@@ -43,7 +43,7 @@ export default function Footer() {
                 </li>
                 {site.contact.emails.map((email) => (
                   <li key={email}>
-                    <a className="link-underline" href={`mailto:${email}`}>
+                    <a className="link-underline break-all" href={`mailto:${email}`}>
                       {email}
                     </a>
                   </li>
