@@ -75,20 +75,15 @@ export default function Hero() {
           />
 
           <div className="mt-10 grid grid-cols-1 sm:grid-cols-12 gap-8 sm:gap-12 items-end">
-            <motion.p
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1.2, delay: 1.2, ease: [0.16, 1, 0.3, 1] }}
-              className="sm:col-span-6 max-w-md text-bone/70 text-balance text-[15px] leading-relaxed"
-            >
+            <p className="sm:col-span-6 max-w-md text-bone/70 text-balance text-[15px] leading-relaxed">
               {site.brand.name} is a modern web design studio shaping clean,
               high-quality websites for brands that want to move differently.
-            </motion.p>
+            </p>
 
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1.2, delay: 1.4, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
               className="sm:col-span-6 flex flex-wrap items-center gap-4 sm:justify-end"
             >
               <a href="#contact" className="btn-primary">
